@@ -24,4 +24,20 @@ class ProjectsTest extends TestCase
         $this->assertDatabaseHas('projects', $attributes);
         $this->get('/projects')->assertSee($attributes['title']);
     }
+
+    /** @test */
+    // To be more clear, this is actually a validation test
+    public function a_project_requires_a_title()
+    {
+        // raw() returns as array not as object
+        $attributes = factory('App\Project')->raw(['title' => '']);
+        $this->post('/projects', $attributes)->assertSessionHasErrors('title');
+    }
+
+    /** @test */
+    public function a_project_requires_a_description()
+    {
+        $attributes = factory('App\Project')->raw(['description' => '']);
+        $this->post('/projects', $attributes)->assertSessionHasErrors('description');
+    }
 }
