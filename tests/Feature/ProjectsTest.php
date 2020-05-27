@@ -11,10 +11,23 @@ class ProjectsTest extends TestCase
     use WithFaker, RefreshDatabase;
 
     /** @test */
-    public function only_authenticated_users_can_create_projects()
+    public function guests_cannot_create_projects()
     {
         $attributes = factory('App\Project')->raw();
         $this->post('/projects', $attributes)->assertRedirect('login');
+    }
+
+    /** @test */
+    public function guests_cannot_view_projects()
+    {
+        $this->get('/projects')->assertRedirect('login');
+    }
+
+    /** @test */
+    public function guests_cannot_view_a_single_project()
+    {
+        $project= factory('App\Project')->create();
+        $this->get($project->path())->assertRedirect('login');
     }
 
     /** @test */
@@ -51,11 +64,20 @@ class ProjectsTest extends TestCase
     }
 
     /** @test */
-    public function a_user_can_view_a_project() 
+    public function a_user_can_view_their_project() 
     {
-        $project = factory('App\Project')->create();
+        $this->actingAs(factory('App\User')->create());
+        $project = factory('App\Project')->create(['owner_id' => auth()->id()]);
         $this->get($project->path())
             ->assertSee($project->title)
             ->assertSee($project->description);
+    }
+
+    /** @test */
+    public function an_authenticated_user_cannot_view_the_projects_of_others()
+    {
+        $this->actingAs(factory('App\User')->create());
+        $project = factory('App\Project')->create(); // gets new owner id, remember
+        $this->get($project->path())->assertStatus(403);
     }
 }
