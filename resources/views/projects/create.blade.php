@@ -12,5 +12,6 @@
             <textarea class="form-control" name="description"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Creare project</button>
+        <a href="/projects">Cancel</a>
     </form>
 @endsection

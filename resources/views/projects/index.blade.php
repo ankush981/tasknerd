@@ -1,6 +1,8 @@
 @extends('layouts.app')
 @section('content')
-    <h1>Tasknerd</h1>
+    <div class="mb-4">
+        <a href="/projects/create">New Project</a>
+    </div>
     <ul>
         @forelse ($projects as $project)
             <li> 
