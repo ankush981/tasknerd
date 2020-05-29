@@ -3,8 +3,8 @@
     <h1>{{ $project->title }}</h1>
     <div>{{ $project->description }}</div>
 
-    <div>
-        <p>Tasks</p>
+    <div class="mt-3">
+        <h2>Tasks</h2>
         @forelse ($project->tasks as $task)
             <div class="card"> 
                 <div class="card-body">
