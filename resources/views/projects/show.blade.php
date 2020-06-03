@@ -9,7 +9,12 @@
             <div class="card mb-1"> 
                 <div class="card-body">
                     <div class="card-text">
-                        {{ $task->body }}
+                        <form action="{{ $project->path() . '/tasks/' . $task->id }}" method="post" class="d-flex">
+                            @csrf
+                            <input name="_method" type="hidden" value="PATCH">
+                            <input name="body" type="text" value="{{ $task->body }}" class="w-100 h-100">
+                            <input type="checkbox" name="completed" onChange="this.form.submit()" {{ $task->completed ? 'checked' : '' }}>
+                        </form>
                     </div>
                 </div>
             </div>
