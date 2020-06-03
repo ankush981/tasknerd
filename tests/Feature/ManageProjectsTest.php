@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Project;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Tests\Setup\ProjectFactory;
 use Tests\TestCase;
 
 class ManageProjectsTest extends TestCase
@@ -53,13 +54,13 @@ class ManageProjectsTest extends TestCase
     /** @test */
     public function a_user_can_update_a_project()
     {
-        $this->signIn();
-        $project = factory('App\Project')->create(['owner_id' => auth()->id()]);
-        $this->patch($project->path(), [
-            'notes' => 'changed'
-        ])->assertRedirect($project->path());
+        $project = app(ProjectFactory::class)->create();
+        $attributes = [ 'notes' => 'changed' ];
+        $this->actingAs($project->owner)
+            ->patch($project->path(), $attributes)
+            ->assertRedirect($project->path());
 
-        $this->assertDatabaseHas('projects', ['notes' => 'changed']);
+        $this->assertDatabaseHas('projects', $attributes);
     }
 
     /** @test */
@@ -83,9 +84,9 @@ class ManageProjectsTest extends TestCase
     /** @test */
     public function a_user_can_view_their_project() 
     {
-        $this->signIn();
-        $project = factory('App\Project')->create(['owner_id' => auth()->id()]);
-        $this->get($project->path())
+        $project = app(ProjectFactory::class)->create();
+        $this->actingAs($project->owner)
+            ->get($project->path())
             ->assertSee($project->title)
             ->assertSee($project->description);
     }
@@ -93,9 +94,10 @@ class ManageProjectsTest extends TestCase
     /** @test */
     public function an_authenticated_user_cannot_view_the_projects_of_others()
     {
-        $this->signIn();
-        $project = factory('App\Project')->create(); // gets new owner id, remember
-        $this->get($project->path())->assertStatus(403);
+        $project = app(ProjectFactory::class)->create();
+        $this->actingAs($this->signIn())
+            ->get($project->path())
+            ->assertStatus(403);
     }
     
     /** @test */
