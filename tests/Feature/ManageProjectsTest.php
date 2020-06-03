@@ -97,4 +97,13 @@ class ManageProjectsTest extends TestCase
         $project = factory('App\Project')->create(); // gets new owner id, remember
         $this->get($project->path())->assertStatus(403);
     }
+    
+    /** @test */
+    public function an_authenticated_user_cannot_update_the_projects_of_others()
+    {
+        $this->signIn();
+        $project = factory('App\Project')->create();
+
+        $this->patch($project->path(), ['notes' => 'changed'])->assertStatus(403);
+    }
 }
