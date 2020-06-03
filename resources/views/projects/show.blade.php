@@ -26,6 +26,15 @@
                 <input type="text" name="body" placeholder="Add a new task ...">
             </form>
         </div>
+
+        <div class="my-3">
+            <form action="{{ $project->path() }}" method="POST">
+                @csrf
+                @method('patch')
+                <textarea name="notes" id="" cols="30" rows="10"> {{ $project->notes }} </textarea>
+                <button type="submit">Save</button>
+            </form>
+        </div>
     </div>
     <a href="/projects">Go back</a>
 @endsection
