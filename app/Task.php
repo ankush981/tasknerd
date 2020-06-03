@@ -8,6 +8,8 @@ class Task extends Model
 {
     protected $guarded = [];
 
+    protected $touches = ['project']; // updates project updated_at too
+
     public function path()
     {
         return $this->project->path() . '/tasks/' . $this->id;
