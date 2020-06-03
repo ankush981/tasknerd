@@ -9,7 +9,7 @@
             <div class="card mb-1"> 
                 <div class="card-body">
                     <div class="card-text">
-                        <form action="{{ $project->path() . '/tasks/' . $task->id }}" method="post" class="d-flex">
+                        <form action="{{ $task->path() }}" method="post" class="d-flex">
                             @csrf
                             <input name="_method" type="hidden" value="PATCH">
                             <input name="body" type="text" value="{{ $task->body }}" class="w-100 h-100">
