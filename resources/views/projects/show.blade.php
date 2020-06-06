@@ -3,6 +3,8 @@
     <h1>{{ $project->title }}</h1>
     <div>{{ $project->description }}</div>
 
+    <a href="{{ $project->path() . '/edit' }}">Edit project</a>
+
     <div class="my-3">
         <h2>Tasks</h2>
         @foreach ($project->tasks as $task)
