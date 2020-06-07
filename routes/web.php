@@ -2,22 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-\App\Project::created(function($project){
-    \App\Activity::create([
-        'project_id' => $project->id,
-        'description' => 'created'
-    ]);
-});
-
-
-\App\Project::updated(function($project){
-    \App\Activity::create([
-        'project_id' => $project->id,
-        'description' => 'updated'
-    ]);
-});
-
-
 Route::group(['middleware' => 'auth'], function() {
     Route::get('/projects', 'ProjectsController@index');
     Route::get('/projects/create', 'ProjectsController@create');
