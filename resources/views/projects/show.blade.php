@@ -33,9 +33,17 @@
             <form action="{{ $project->path() }}" method="POST">
                 @csrf
                 @method('patch')
-                <textarea name="notes" id="" cols="30" rows="10"> {{ $project->notes }} </textarea>
+                <textarea name="notes" id="" cols="30" rows="10">{{ $project->notes }}</textarea>
                 <button type="submit">Save</button>
             </form>
+
+            @if($errors->any())
+                <ul class="error mt-5">
+                    @foreach($errors->all() as $error) 
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            @endif
         </div>
     </div>
     <a href="/projects">Go back</a>

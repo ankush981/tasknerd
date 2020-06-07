@@ -69,6 +69,20 @@ class ManageProjectsTest extends TestCase
     }
 
     /** @test */
+    public function a_user_can_update_project_notes()
+    {
+        $project = app(ProjectFactory::class)->create();
+        $attributes = [ 
+            'notes' => 'Changed',
+        ];
+        $this->actingAs($project->owner)
+            ->patch($project->path(), $attributes)
+            ->assertRedirect($project->path());
+        $this->get($project->path() . '/edit')->assertOk();
+        $this->assertDatabaseHas('projects', $attributes);
+    }
+
+    /** @test */
     // To be more clear, this is actually a validation test
     public function a_project_requires_a_title()
     {
