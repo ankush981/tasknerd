@@ -45,6 +45,8 @@
                 </ul>
             @endif
         </div>
+
+        @include('projects.activity.card')
     </div>
     <a href="/projects">Go back</a>
 @endsection
